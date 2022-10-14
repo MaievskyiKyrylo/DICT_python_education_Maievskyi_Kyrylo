@@ -10,7 +10,7 @@ age = (remainder3 * 70 + remainder5 * 21 + remainder7 * 15) % 105
 print(f"Your age is {age} ; At your age you can become a programmer!")
 print("Now I will prove to you that I can count to any number you want")
 a = int(input(">"))
-for i in range(a+1):
+for i in range(a + 1):
     print(str(i) + "!")
 print("Completed. Have a nice day!")
 print("Lets test your programming knowledge.\nWhat is the capital of Ukraine?")
