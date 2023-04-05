@@ -1,51 +1,53 @@
-formats = ["plain", "bolt", "inline-code", "link", "header",
-           "unordered-list", "ordered-list", "newline", "!help", "!done"]
-
-class Markdown:
-    def plain(self):
-        self.level = [1, 2, 3, 4]
-
-    def link(self):
-        self.url = input("URL: >")
-
-    def header(self):
-        self.level = [1, 2, 3, 4]
-
-    def information(self):
-        print("Available formatters: plain bold italic header link inline-code ordered-list unordered-list new-line"
-              "\nSpecial commands: !help !done")
-
-marks = Markdown()
+text = ""
 
 while True:
-    choice = input("Choose a formatter: >")
-    try:
-        choice != formats
-    except:
+    formatter = input("Choose a formatter: ")
+    if formatter == "!help":
+        print("Available formatters: plain bold italic header link inline-code ordered-list "
+              "unordered-list new-line\nSpecial commands: !help !done")
+    elif formatter == "!done":
+        with open("output.md", "w") as file:
+            file.write(text)
+        break
+    elif formatter not in ["plain", "bold", "italic", "header", "link", "inline-code", "ordered-list",
+                           "unordered-list", "new-line"]:
         print("Unknown formatting type or command")
+    else:
+        if formatter == "plain":
+            text += input("Text: ")
+        elif formatter == "bold":
+            text += "**" + input("Text: ") + "**"
+        elif formatter == "italic":
+            text += "*" + input("Text: ") + "*"
+        elif formatter == "inline-code":
+            text += "`" + input("Text: ") + "`"
+        elif formatter == "link":
+            label = input("Label: ")
+            url = input("URL: ")
+            text += "[" + label + "](" + url + ")"
+        elif formatter == "header":
+            level = int(input("Level: "))
+            if level < 1 or level > 6:
+                print("The level should be within the range of 1 to 6")
+                continue
+            text += "#" * level + " " + input("Text: ") + "\n"
+        elif formatter == "unordered-list":
+            while True:
+                rows = int(input("Number of rows: "))
+                if rows > 0:
+                    break
+                print("The number of rows should be greater than zero")
+            for i in range(rows):
+                text += "* " + input(f"Row #{i+1}: ") + "\n"
+        elif formatter == "ordered-list":
+            while True:
+                rows = int(input("Number of rows: "))
+                if rows > 0:
+                    break
+                print("The number of rows should be greater than zero")
+            for i in range(rows):
+                text += f"{i+1}. " + input(f"Row #{i+1}: ") + "\n"
+        elif formatter == "new-line":
+            text += "\n"
 
-    if choice == "!help":
-        marks.information()
-    elif choice == "!done":
-        exit()
-    elif choice == "plain":
-        choice += marks.header()
-    elif choice == "link":
-        choice += marks.header()
-    elif choice == "unordered-list":
-        choice += marks.header()
-    elif choice == "ordered-list":
-        choice += marks.header()
-    elif choice == "header":
-        choice += marks.header()
-    elif choice == "new-line":
-        choice += marks.header()
-    elif choice == "inline-code":
-        choice += marks.header()
-    elif choice == "bold":
-        choice += marks.header()
-
-    elif choice not in formats:
-        print("Unknown formatting type or command")
-
-
+        print(text)
